@@ -3,6 +3,7 @@ package com.ryo.ryopicturebackend.exception;
 import com.ryo.ryopicturebackend.Common.BaseResponse;
 import com.ryo.ryopicturebackend.Common.ResultUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 /**
@@ -18,6 +19,15 @@ public class GlobalExceptionHandler {
     public BaseResponse<?> businessExceptionHandler(BusinessException e) {
         log.error("BusinessException", e);
         return ResultUtils.error(e.getCode(), e.getMessage());
+    }
+
+    /**
+     * 请求体格式错误或为空，@RequestBody 无法解析出对象时抛出该异常
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public BaseResponse<?> httpMessageNotReadableExceptionHandler(HttpMessageNotReadableException e) {
+        log.error("HttpMessageNotReadableException", e);
+        return ResultUtils.error(ErrorCode.PARAMS_ERROR, "请求参数格式错误");
     }
 
     @ExceptionHandler(RuntimeException.class)
