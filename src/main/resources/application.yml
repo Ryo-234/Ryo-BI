@@ -6,6 +6,9 @@ server:
 spring:
   application:
     name: ryo-picture-backend
+  # 激活本地环境配置，application-local.yml 已被 .gitignore 忽略，不入库
+  profiles:
+    active: local
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -36,4 +39,13 @@ knife4j:
         api-rule: package
         api-rule-resources:
           - com.ryo.ryopicturebackend.Controller
+
+# DeepSeek 大模型配置
+# API Key 放在 application-local.yml 中配置
+deepseek:
+  base-url: https://api.deepseek.com
+  model: deepseek-flash
+  timeout: 120000
+  # 最大输出 token 数，不超过 8192
+  max-tokens: 4096
 

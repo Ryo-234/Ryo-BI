@@ -31,3 +31,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### 本地环境配置 ###
+# 含有 DeepSeek API Key 等敏感信息，不提交到仓库
+src/main/resources/application-local.yml
