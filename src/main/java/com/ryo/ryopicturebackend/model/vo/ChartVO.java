@@ -25,6 +25,10 @@ public class ChartVO implements Serializable {
     private String genChart;
     //生成的分析结论
     private String genResult;
+    //任务状态：wait 排队中、running 执行中、succeed 已完成、failed 失败
+    private String status;
+    //任务执行信息，执行失败时记录失败原因
+    private String execMessage;
     //创建用户 id
     private Long userId;
     //创建时间

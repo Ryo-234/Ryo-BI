@@ -49,3 +49,8 @@ deepseek:
   # 最大输出 token 数，不超过 8192
   max-tokens: 4096
 
+rabbitmq:
+  host: localhost
+  port: 5672
+  password: guest
+  username: guest

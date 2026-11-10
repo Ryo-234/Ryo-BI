@@ -378,6 +378,8 @@ public class ChartServiceImpl extends ServiceImpl<ChartMapper, Chart>
         chartVO.setChartType(chart.getChartType());
         chartVO.setGenChart(chart.getGenChart());
         chartVO.setGenResult(chart.getGenResult());
+        chartVO.setStatus(chart.getStatus());
+        chartVO.setExecMessage(chart.getExecMessage());
         chartVO.setUserId(chart.getUserId());
         chartVO.setCreateTime(chart.getCreateTime());
         chartVO.setUpdateTime(chart.getUpdateTime());
