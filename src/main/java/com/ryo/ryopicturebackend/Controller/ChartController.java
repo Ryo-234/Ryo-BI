@@ -3,6 +3,7 @@ package com.ryo.ryopicturebackend.Controller;
 import com.alibaba.excel.util.StringUtils;
 import com.ryo.ryopicturebackend.Common.BaseResponse;
 import com.ryo.ryopicturebackend.Common.ResultUtils;
+import com.ryo.ryopicturebackend.Config.ThreadPoolExecutorConfig;
 import com.ryo.ryopicturebackend.annotation.AuthCheck;
 import com.ryo.ryopicturebackend.exception.BusinessException;
 import com.ryo.ryopicturebackend.exception.ErrorCode;
@@ -28,6 +29,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadPoolExecutor;
 
 /**
  * 图表接口
@@ -42,9 +45,12 @@ public class ChartController {
 
     @Resource
     private AiManager aiManager;
-    @Autowired
+
+    @Resource
     private UserService userService;
 
+    @Resource
+    private ThreadPoolExecutor threadPoolExecutor;
     /**
      * 智能分析
      *
@@ -82,31 +88,56 @@ public class ChartController {
         String csvData = ExcelUtils.excelToCsv(multipartFile);
         userInput.append(csvData).append("\n");
 
-        //拿到返回结果
-        String result = aiManager.doChat(userInput.toString());
-        //对返回结果进行拆分
-        String[] splits = result.split("【【【【【");
-        //对拆分结果校验
-        if(splits.length <3){
-            throw new BusinessException(ErrorCode.SYSTEM_ERROR,"AI回复有误");
-        }
 
-        String genChart = splits[1].trim();
-        String genResult = splits[2].trim();
         //存数据库
         Chart chart = new Chart();
         chart.setName(name);
         chart.setGoal(goal);
         chart.setChartType(chartType);
         chart.setChartData(csvData);
-        chart.setGenChart(genChart);
-        chart.setGenResult(genResult);
+        //插入数据库时，还没生成结束，把生成结果都去掉
+        //        chart.setGenChart(genChart);
+        //        chart.setGenResult(genResult);
+        chart.setStatus("wait");
         chart.setUserId(loginUserVO.getId());
         boolean saveResult = chartService.save(chart);
-        ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR,"数据库保存失败");
+        ThrowUtils.throwIf(!saveResult, ErrorCode.SYSTEM_ERROR,"图表保存失败");
+
+        //在最终的返回结果前提交一个任务
+
+        CompletableFuture.runAsync(() -> {
+            //更新状态为running
+            Chart updateChart = new Chart();
+            updateChart.setId(chart.getId());
+            updateChart.setStatus("running");
+            boolean b = chartService.updateById(updateChart);
+            if(!b){
+                //错误异常
+            }
+
+            //拿到返回结果
+            String result = aiManager.doChat(userInput.toString());
+            //对返回结果进行拆分
+            String[] splits = result.split("【【【【【");
+            //对拆分结果校验
+            if(splits.length <3){
+                throw new BusinessException(ErrorCode.SYSTEM_ERROR,"AI回复有误");
+            }
+
+            String genChart = splits[1].trim();
+            String genResult = splits[2].trim();
+            //调用AI得到结果再更新一次
+            Chart updataChartResult = new Chart();
+            updataChartResult.setId(chart.getId());
+            updataChartResult.setGenChart(genChart);
+            updataChartResult.setGenResult(genResult);
+            updataChartResult.setStatus("succeed");
+            boolean updataResult = chartService.updateById(updataChartResult);
+            if(!updataResult){}
+        }, threadPoolExecutor);
         BiResponse biResponse = new BiResponse();
-        biResponse.setGenChart(genChart);
-        biResponse.setGenResult(genResult);
+//        biResponse.setGenChart(genChart);
+//        biResponse.setGenResult(genResult);
         biResponse.setChartId(chart.getId());
         return ResultUtils.success(biResponse);
 
