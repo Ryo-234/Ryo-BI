@@ -1,0 +1,60 @@
+server:
+  port: 8123
+  servlet:
+    context-path: /api
+
+spring:
+  application:
+    name: ryo-picture-backend
+  # 激活本地环境配置，application-local.yml 已被 .gitignore 忽略，不入库
+  profiles:
+    active: local
+  # 数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # allowPublicKeyRetrieval=true：MySQL 8 默认使用 caching_sha2_password 认证，
+    # 缺少该参数会报 "Public Key Retrieval is not allowed"，导致所有数据库操作失败
+    url: "jdbc:mysql://localhost:3306/ryo_picture?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai"
+    # 账号密码走占位符：优先读取环境变量，未设置时回落到本地开发默认值
+    # 真实值请写在 application-local.yml（已被 .gitignore 忽略）中
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: false
+    # 仅在开发环境开启日志
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      logic-delete-field: isDelete # 全局逻辑删除的实体字段名
+      logic-delete-value: 1 # 逻辑已删除值（默认为 1）
+      logic-not-delete-value: 0 # 逻辑未删除值（默认为 0）
+
+# 接口文档配置
+knife4j:
+  enable: true
+  openapi:
+    title: "接口文档"
+    version: 1.0
+    group:
+      default:
+        group-name: 默认分组
+        api-rule: package
+        api-rule-resources:
+          - com.ryo.ryopicturebackend.Controller
+
+# DeepSeek 大模型配置
+# API Key 放在 application-local.yml 中配置
+deepseek:
+  base-url: https://api.deepseek.com
+  model: deepseek-flash
+  timeout: 120000
+  # 最大输出 token 数，不超过 8192
+  max-tokens: 4096
+
+rabbitmq:
+  host: localhost
+  port: 5672
+  password: guest
+  username: guest
