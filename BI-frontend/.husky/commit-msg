@@ -1,1 +1,5 @@
-npx --no -- commitlint --edit $1
+# 仅当本次提交包含前端文件时才做 commitlint 校验；
+# 后端沿用中文提交信息风格，不受 Conventional Commits 约束
+if git diff --cached --name-only | grep -q '^BI-frontend/'; then
+  cd "$(git rev-parse --show-toplevel)/BI-frontend" && npx --no -- commitlint --edit "$1"
+fi

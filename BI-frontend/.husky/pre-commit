@@ -1,1 +1,3 @@
-lint-staged
+# 前后端已合并为单仓库，lint-staged 需在前端子目录下执行，
+# 才能找到 BI-frontend/.lintstagedrc 与 BI-frontend/node_modules
+cd "$(git rev-parse --show-toplevel)/BI-frontend" && npx lint-staged
