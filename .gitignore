@@ -1,0 +1,72 @@
+# ============================================================
+#  Ryo-BI 智能数据分析平台 —— 根目录忽略规则
+#  子项目 BI-backend/ 与 BI-frontend/ 各自还有一份 .gitignore
+# ============================================================
+
+# ---------- IDE / 编辑器 ----------
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+.settings/
+.project
+.classpath
+.factorypath
+*.swp
+
+# ---------- 构建产物 ----------
+target/
+build/
+dist/
+out/
+*.jar
+*.war
+*.class
+
+# ---------- 依赖 ----------
+node_modules/
+.pnpm-store/
+.yarn/
+.venv/
+venv/
+
+# ---------- 缓存与临时文件 ----------
+.umi/
+.umi-production/
+.umi-test/
+.turbopack/
+.next/
+.nuxt/
+.cache/
+coverage/
+__pycache__/
+*.py[cod]
+*.tmp
+*.bak
+*~
+Thumbs.db
+.DS_Store
+
+# ---------- 日志 ----------
+*.log
+npm-debug.log*
+yarn-error.log
+pnpm-debug.log*
+
+# ---------- 本地私有配置（含 API Key、数据库密码等敏感信息） ----------
+# 真实值写在被忽略的 application-local.yml / .env.local 中，
+# 对应的 .example 模板文件仍然入库，方便他人复现环境。
+**/application-local.yml
+**/.env.local
+**/.env.*.local
+
+# ---------- AI 助手本地设置 ----------
+.claude/settings.local.json
+
+# ---------- 旧仓库 git 元数据备份（历史已并入本仓库） ----------
+.git-legacy/
+
+# ---------- 本项目不纳入版本管理的资料 ----------
+/docs/
+/*.docx

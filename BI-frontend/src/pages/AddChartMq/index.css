@@ -1,0 +1,43 @@
+/* 智能分析（MQ）页面样式：只负责间距与容器高度，主题色交给 antd 主题变量 */
+.add-chart-mq {
+  padding: 16px;
+}
+
+.add-chart-mq__card {
+  border-radius: 8px;
+}
+
+/* 任务状态区 */
+.add-chart-mq__status {
+  line-height: 1.9;
+}
+
+/* 任务 id 过长时换行显示 */
+.add-chart-mq__task-id {
+  word-break: break-all;
+}
+
+/* 状态说明文案 */
+.add-chart-mq__hint {
+  color: rgba(0, 0, 0, 0.65);
+}
+
+/* 分析结论文本，AI 返回的是纯文本，保留换行 */
+.add-chart-mq__result {
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 无数据时的占位区域 */
+.add-chart-mq__placeholder {
+  padding: 40px 0;
+  color: rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* 图表容器高度 */
+.add-chart-mq__chart {
+  width: 100%;
+  height: 420px;
+}

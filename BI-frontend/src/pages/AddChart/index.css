@@ -1,0 +1,35 @@
+/* 智能分析页面样式：只负责间距与卡片高度，主题色交给 antd 主题变量 */
+.add-chart {
+  padding: 16px;
+}
+
+.add-chart__card {
+  border-radius: 8px;
+}
+
+/* 任务状态提示 */
+.add-chart__status {
+  margin-bottom: 12px;
+  color: rgba(0, 0, 0, 0.65);
+  line-height: 1.9;
+}
+
+/* 分析结论文本，AI 返回的是纯文本，保留换行 */
+.add-chart__result {
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 无数据时的占位区域 */
+.add-chart__placeholder {
+  padding: 60px 0;
+  color: rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* 图表容器高度 */
+.add-chart__chart {
+  width: 100%;
+  height: 420px;
+}

@@ -1,0 +1,28 @@
+/* 智能分析（同步）页面样式：只负责间距与容器高度，主题色交给 antd 主题变量 */
+.add-chart-sync {
+  padding: 16px;
+}
+
+.add-chart-sync__card {
+  border-radius: 8px;
+}
+
+/* 分析结论文本，AI 返回的是纯文本，保留换行 */
+.add-chart-sync__result {
+  line-height: 1.9;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* 无数据时的占位区域 */
+.add-chart-sync__placeholder {
+  padding: 60px 0;
+  color: rgba(0, 0, 0, 0.25);
+  text-align: center;
+}
+
+/* 图表容器高度 */
+.add-chart-sync__chart {
+  width: 100%;
+  height: 420px;
+}
