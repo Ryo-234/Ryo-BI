@@ -114,7 +114,6 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.ryo.ryopicturebackend.RyoPictureBackendApplication</mainClass>
-                    <skip>true</skip>
                 </configuration>
                 <executions>
                     <execution>

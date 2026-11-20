@@ -3,3 +3,7 @@
 deepseek:
   # DeepSeek 的 API Key，申请地址：https://platform.deepseek.com/api_keys
   api-key: sk-xxxxxxxxxxxxxxxx
+
+# 数据库账号密码：application.yml 中以 ${DB_USERNAME:xxx} / ${DB_PASSWORD:xxx} 引用
+DB_USERNAME: root
+DB_PASSWORD: 123456

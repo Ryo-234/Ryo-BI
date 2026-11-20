@@ -12,9 +12,13 @@ spring:
   # 数据库配置
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: "jdbc:mysql://localhost:3306/ryo_picture?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai"
-    username: root
-    password: 123456
+    # allowPublicKeyRetrieval=true：MySQL 8 默认使用 caching_sha2_password 认证，
+    # 缺少该参数会报 "Public Key Retrieval is not allowed"，导致所有数据库操作失败
+    url: "jdbc:mysql://localhost:3306/ryo_picture?useUnicode=true&characterEncoding=utf8&useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai"
+    # 账号密码走占位符：优先读取环境变量，未设置时回落到本地开发默认值
+    # 真实值请写在 application-local.yml（已被 .gitignore 忽略）中
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
 
 mybatis-plus:
   configuration:
